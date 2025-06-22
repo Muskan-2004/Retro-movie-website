@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RETRO - 90s Bollywood Movies</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --neon-pink: #ff3e6c;
+            --neon-gold: #ffd700;
+            --neon-green: #4caf50;
+            --neon-blue: #2196f3;
+            --text-color: #e0e0e0;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --accent-color: #ff3e6c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 62, 108, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 20%);
+        }
+
+        /* Film Grain Effect */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.1"/></svg>');
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Header Styles */
+        header {
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .logo-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo {
+            font-size: 5rem;
+            font-weight: bold;
+            color: var(--neon-gold);
+            text-shadow: 0 0 10px var(--neon-gold), 0 0 20px var(--neon-gold);
+            letter-spacing: 0.5rem;
+            margin-bottom: 1rem;
+            animation: flicker 3s infinite alternate;
+            font-family: 'Times New Roman', serif;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-bg {
+            position: absolute;
+            top: -20px;
+            left: -30px;
+            right: -30px;
+            bottom: -20px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--neon-pink);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 5px var(--neon-pink);
+            font-style: italic;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav button {
+            background: transparent;
+            border: 1px solid var(--neon-gold);
+            color: var(--neon-gold);
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 30px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        nav button:hover {
+            background: var(--neon-gold);
+            color: #000;
+            box-shadow: 0 0 10px var(--neon-gold);
+        }
+
+        nav button:hover::before {
+            left: 100%;
+        }
+
+        nav button.active {
+            background: var(--neon-gold);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-gold);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .movie-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #333;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(255, 62, 108, 0.3);
+            border-color: var(--neon-pink);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-bottom: 1px solid #333;
+            transition: transform 0.5s;
+        }
+
+        .movie-card:hover .movie-poster {
+            transform: scale(1.05);
+        }
+
+        .movie-info {
+            padding: 1.5rem;
+        }
+
+        .movie-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--neon-pink);
+            font-weight: bold;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .movie-year {
+            color: var(--neon-gold);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .movie-cast {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: #aaa;
+        }
+
+        .movie-description {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-top: 0.5rem;
+            color: #ccc;
+        }
+
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--neon-pink);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Search Section */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            border: 1px solid var(--neon-gold);
+            background: rgba(30, 30, 30, 0.8);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 15px var(--neon-gold);
+            border-color: var(--neon-pink);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neon-gold);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            color: #666;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-pink), transparent);
+        }
+
+        /* Animations */
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 10px var(--neon-gold), 0 0 20px var(--neon-gold);
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Bollywood Marquee Effect */
+        .marquee {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            background: rgba(255, 62, 108, 0.1);
+            padding: 0.5rem 0;
+            margin-bottom: 2rem;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 20s linear infinite;
+            color: var(--neon-gold);
+            font-style: italic;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+            .movie-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+            nav {
+                gap: 0.8rem;
+            }
+            nav button {
+                padding: 0.4rem 1rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Bollywood Star Effect */
+        .star {
+            position: absolute;
+            background: white;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: twinkle 2s infinite alternate;
+            opacity: 0;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo-bg"></div>
+            <div class="logo">RETRO</div>
+        </div>
+        <div class="tagline">90s Bollywood Nostalgia</div>
+        
+        <div class="marquee">
+            <div class="marquee-content">
+                ✨ DDLJ • Kuch Kuch Hota Hai • Dil To Pagal Hai • Andaz Apna Apna • Hum Aapke Hain Koun • Baazigar • Darr • Khalnayak • Raja Hindustani • Pardes • Karan Arjun ✨
+            </div>
+        </div>
+        
+        <nav>
+            <button class="active" data-filter="all">All Movies</button>
+            <button data-filter="romance">Romance</button>
+            <button data-filter="action">Action</button>
+            <button data-filter="comedy">Comedy</button>
+            <button data-filter="drama">Drama</button>
+        </nav>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Search 90s Bollywood movies...">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="movie-grid" id="movieGrid">
+            <!-- Movies will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2023 RETRO - 90s Bollywood Movies Archive | Created with ❤️ for Indian cinema</p>
+        <p>All movie data is for demonstration purposes only</p>
+    </footer>
+
+    <script>
+        // Create random stars
+        function createStars() {
+            const count = 30;
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = `${Math.random() * 10 + 5}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                document.body.appendChild(star);
+            }
+        }
+
+        // Movie data - 90s Bollywood classics
+        const movies = [
+            {
+                title: "Dilwale Dulhania Le Jayenge",
+                year: 1995,
+                genre: ["romance", "drama"],
+                actors: ["Shah Rukh Khan", "Amrish Puri", "Anupam Kher"],
+                actress: ["Kajol", "Farida Jalal"],
+                director: "Aditya Chopra",
+                producer: "Yash Chopra",
+                description: "When Raj meets Simran in Europe, it isn't love at first sight but when Simran moves to India for an arranged marriage, love makes its presence felt.",
+                poster: "https://m.media-amazon.com/images/M/MV5BMDQ2ZmE2NTMtZDE3NC00YzFjLWJhNmEtMDEzMTI5ZjU2ZGM0XkEyXkFqcGdeQXVyNTkzNDQ4ODc@._V1_.jpg",
+                hit: true
+            },
+            {
+                title: "Kuch Kuch Hota Hai",
+                year: 1998,
+                genre: ["romance", "drama"],
+                actors: ["Shah Rukh Khan", "Salman Khan", "Anupam Kher"],
+                actress: ["Kajol", "Rani Mukerji"],
+                director: "Karan Johar",
+                producer: "Yash Johar",
+                description: "During their college years, Anjali was in love with her best-friend Rahul, but he had eyes only for Tina. Years later, Rahul and his daughter try to reunite Anjali and Rahul.",
+                poster: "image.png",
+                hit: true
+            },
+            {
+                title: "Baazigar",
+                year: 1993,
+                genre: ["action", "thriller"],
+                actors: ["Shah Rukh Khan", "Shilpa Shetty", "Dalip Tahil"],
+                actress: ["Shilpa Shetty", "Kajol"],
+                director: "Abbas-Mustan",
+                producer: "Ganesh Jain",
+                description: "A young man with a vendetta against a business tycoon seduces and kills his elder daughter, then proceeds to woo his younger daughter to seek revenge.",
+                poster: "image copy.png",
+                hit: true
+            },
+            {
+                title: "Andaz Apna Apna",
+                year: 1994,
+                genre: ["comedy", "romance"],
+                actors: ["Aamir Khan", "Salman Khan", "Paresh Rawal"],
+                actress: ["Raveena Tandon", "Karisma Kapoor"],
+                director: "Rajkumar Santoshi",
+                producer: "Vinay Kumar Sinha",
+                description: "Two slackers competing for the affections of an heiress inadvertently become her protectors from a dangerous criminal.",
+                poster: "https://m.media-amazon.com/images/M/MV5BZTIwYzRjMGYtZWQ0Ni00NDZhLThhZDYtOGViZGJiZTkwMzk2XkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_.jpg",
+                cult: true
+            },
+            {
+                title: "Hum Aapke Hain Koun..!",
+                year: 1994,
+                genre: ["romance", "musical"],
+                actors: ["Salman Khan", "Mohnish Bahl", "Alok Nath"],
+                actress: ["Madhuri Dixit", "Renuka Shahane"],
+                director: "Sooraj R. Barjatya",
+                producer: "Rajkumar Barjatya",
+                description: "Prem and Nisha fall in love during their siblings' weddings, but face a tragedy that threatens to tear them apart.",
+                poster: "image copy 2.png",
+                hit: true
+            },
+            {
+                title: "Darr",
+                year: 1993,
+                genre: ["thriller", "romance"],
+                actors: ["Shah Rukh Khan", "Sunny Deol", "Anupam Kher"],
+                actress: ["Juhi Chawla"],
+                director: "Yash Chopra",
+                producer: "Yash Chopra",
+                description: "A woman is stalked by a psychopath who claims to love her, while her naval officer boyfriend tries to protect her.",
+                poster: "image copy 3.png",
+                hit: true
+            },
+            {
+                title: "Khalnayak",
+                year: 1993,
+                genre: ["action", "drama"],
+                actors: ["Sanjay Dutt", "Jackie Shroff", "Paresh Rawal"],
+                actress: ["Madhuri Dixit"],
+                director: "Subhash Ghai",
+                producer: "Subhash Ghai",
+                description: "A police officer goes undercover as a dancer to nab a dangerous criminal who has escaped from prison.",
+                poster: "image copy 4.png",
+                hit: true
+            },
+            {
+                title: "Raja Hindustani",
+                year: 1996,
+                genre: ["romance", "drama"],
+                actors: ["Aamir Khan", "Kulbhushan Kharbanda"],
+                actress: ["Karisma Kapoor"],
+                director: "Dharmesh Darshan",
+                producer: "Aly Morani, Karim Morani, Bunty Soorma",
+                description: "A taxi driver falls in love with a rich heiress, but their class differences create problems in their relationship.",
+                poster: "image copy 9.png",
+                hit: true
+            },
+            {
+                title: "Pardes",
+                year: 1997,
+                genre: ["drama", "romance"],
+                actors: ["Shah Rukh Khan", "Amrish Puri", "Apurva Agnihotri"],
+                actress: ["Mahima Chaudhry"],
+                director: "Subhash Ghai",
+                producer: "Subhash Ghai",
+                description: "An NRI wants his son to marry the daughter of his friend in India, but cultural differences create complications.",
+                poster: "image copy 8.png",
+                hit: true
+            },
+            {
+                title: "Karan Arjun",
+                year: 1995,
+                genre: ["action", "fantasy"],
+                actors: ["Shah Rukh Khan", "Salman Khan", "Amrish Puri"],
+                actress: ["Kajol", "Mamta Kulkarni"],
+                director: "Rakesh Roshan",
+                producer: "Rakesh Roshan",
+                description: "Two brothers are murdered but are reincarnated years later to avenge their deaths and reunite with their mother.",
+                poster: "image copy 7.png",
+                hit: true
+            },
+            {
+                title: "Dil To Pagal Hai",
+                year: 1997,
+                genre: ["romance", "musical"],
+                actors: ["Shah Rukh Khan", "Akshay Kumar"],
+                actress: ["Madhuri Dixit", "Karisma Kapoor"],
+                director: "Yash Chopra",
+                producer: "Yash Chopra",
+                description: "A love triangle develops between the members of a musical dance troupe.",
+                poster: "image copy 6.png",
+                hit: true
+            },
+            {
+                title: "Soldier",
+                year: 1998,
+                genre: ["action", "thriller"],
+                actors: ["Bobby Deol", "Raakhee", "Dalip Tahil"],
+                actress: ["Preity Zinta"],
+                director: "Abbas-Mustan",
+                producer: "Kumar Taurani, Ramesh Taurani",
+                description: "An army officer is framed for a crime he didn't commit and seeks revenge against those responsible.",
+                poster: "image copy 5.png",
+                hit: true
+            }
+        ];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            renderMovies(movies);
+            setupFilters();
+            setupSearch();
+        });
+
+        // Render movies to the page
+        function renderMovies(moviesToRender) {
+            const movieGrid = document.getElementById('movieGrid');
+            movieGrid.innerHTML = '';
+
+            moviesToRender.forEach(movie => {
+                const movieCard = document.createElement('div');
+                movieCard.className = 'movie-card';
+                
+                let badge = '';
+                if (movie.hit) {
+                    badge = '<div class="badge">Super Hit</div>';
+                } else if (movie.cult) {
+                    badge = '<div class="badge" style="background: var(--neon-blue)">Cult Classic</div>';
+                }
+
+                movieCard.innerHTML = `
+                    ${badge}
+                    <img src="${movie.poster}" alt="${movie.title}" class="movie-poster">
+                    <div class="movie-info">
+                        <h3 class="movie-title">${movie.title}</h3>
+                        <div class="movie-year">${movie.year}</div>
+                        <div class="movie-cast">
+                            <strong>Starring:</strong> ${movie.actors.join(', ')}<br>
+                            <strong>Actresses:</strong> ${movie.actress.join(', ')}<br>
+                            <strong>Director:</strong> ${movie.director}<br>
+                            <strong>Producer:</strong> ${movie.producer}
+                        </div>
+                        <p class="movie-description">${movie.description}</p>
+                    </div>
+                `;
+                
+                movieGrid.appendChild(movieCard);
+            });
+        }
+
+        // Setup genre filters
+        function setupFilters() {
+            const filterButtons = document.querySelectorAll('nav button');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter movies
+                    const filter = this.dataset.filter;
+                    if (filter === 'all') {
+                        renderMovies(movies);
+                    } else {
+                        const filteredMovies = movies.filter(movie => 
+                            movie.genre.includes(filter)
+                        );
+                        renderMovies(filteredMovies);
+                    }
+                });
+            });
+        }
+
+        // Setup search functionality
+        function setupSearch() {
+            const searchInput = document.querySelector('.search-input');
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                if (searchTerm.length > 2) {
+                    const filteredMovies = movies.filter(movie => 
+                        movie.title.toLowerCase().includes(searchTerm) ||
+                        movie.actors.some(actor => actor.toLowerCase().includes(searchTerm)) ||
+                        movie.actress.some(actress => actress.toLowerCase().includes(searchTerm)) ||
+                        movie.director.toLowerCase().includes(searchTerm)
+                    );
+                    renderMovies(filteredMovies);
+                } else if (searchTerm.length === 0) {
+                    renderMovies(movies);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
